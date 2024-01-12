@@ -7,6 +7,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { addUser, removeUser } from "../utils/userSlice";
+import { LOGO } from "../utils/constants";
+
 
 
 const Header = () => {
@@ -27,7 +29,7 @@ const Header = () => {
   };
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+   const unsubscribe= onAuthStateChanged(auth, (user) => {
       if (user) {
         const {uid,email,displayName,photoURL} = user;
         dispatch(addUser({uid:uid,email:email,displayName:displayName,photoURL:photoURL}));
@@ -44,12 +46,15 @@ const Header = () => {
     
       }
     });
+
+    return ()=>unsubscribe();
+     
   }, []);
   return (
     <div className=" absolute w-full px-8 py-2 bg-gradient-to-b from-black z-10 flex justify-between">
       <img
         className="w-44 "
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/1198px-Netflix_2015_logo.svg.png"
+        src={LOGO}
         alt="logo"
       />
       { user && <div className="flex p-1">

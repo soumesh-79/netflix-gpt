@@ -11,6 +11,8 @@ import { auth } from "../utils/firebase";
 import {  updateProfile } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
+import { Background, photoURL } from "../utils/constants";
+
 
 const Login = () => {
   const [isSignInForm, setSignInForm] = useState(true);
@@ -48,7 +50,7 @@ const Login = () => {
           const user = userCredential.user;
 
           updateProfile(user, {
-            displayName: "name.current.value", photoURL: "https://www.shutterstock.com/image-photo/handsome-smiling-young-man-folded-260nw-2069457431.jpg"
+            displayName: "name.current.value", photoURL:photoURL,
           }).then(() => {
             const {uid,email,displayName,photoURL} = auth.currentUser;
           dispatch(addUser({uid:uid,email:email,displayName:displayName,photoURL:photoURL}));
@@ -81,7 +83,8 @@ const Login = () => {
           const errorCode = error.code;
           const errorMessage = error.message;
           setErrorMessage("User Not Found");
-          console.log(errorCode + "-" + errorMessage);
+          console.log(errorCode + "" + errorMessage);
+          
         });
     }
   };
@@ -90,8 +93,8 @@ const Login = () => {
       <Header />
       <div className="absolute">
         <img
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/c38a2d52-138e-48a3-ab68-36787ece46b3/eeb03fc9-99c6-438e-824d-32917ce55783/IN-en-20240101-popsignuptwoweeks-perspective_alpha_website_large.jpg"
-          alt="logo"
+          src={Background}
+          alt="Background"
         />
       </div>
       <form
